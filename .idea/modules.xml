@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/BubbleDetector.iml" filepath="$PROJECT_DIR$/.idea/BubbleDetector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../BubbleDetector_test/.idea/BubbleDetector_test.iml" filepath="$PROJECT_DIR$/../BubbleDetector_test/.idea/BubbleDetector_test.iml" />
     </modules>
   </component>
 </project>
