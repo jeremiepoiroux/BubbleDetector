@@ -18,7 +18,7 @@ query_stop = '2017-05-26'
 query_geocode = ''
 
 # Info
-# tweet = '[Test] ' + 'Now I follow people whom tweeted in *' + query_lang + '* about ' + query_string + ' 1/2 '
+# tweet = '[Test] ' + 'Now I follow people who tweeted in *' + query_lang + '* about ' + query_string + ' 1/2 '
 # api.update_status(status=tweet)
 
 # last_tweet = api.user_timeline(screen_name='BubbleBot_', count='1')
