@@ -1,53 +1,42 @@
-import json
-import pandas
-tweets_data = []
-tweets_file = open('fetched_tweets.json', 'r')
-for line in tweets_file:
-    try:
-        tweet = json.loads(line)
-        tweets_data.append(tweet)
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import Counter
 
-    except:
-        pass
+df = pd.read_csv('lyon_3.csv')
+number_tweets = len(df.index)
+number_tweets
+columns = ['screen_names']
+df1 = list(df.screen_names)
+df1 = Counter(df1)
+df1 = pd.DataFrame.from_dict(df1, orient='index').reset_index()
+df1 = df1.rename(columns={'index':'screen names', 0:'number of tweets'})
+df1['names'] = (df['names'])
+df1['user id'] = (df['user id'])
+df1['statuses count'] = (df['statuses count'])
+df1['friends count'] = (df['friends count'])
+df1['followers count'] = (df['followers count'])
+df1 = df1.sort_values(by='number of tweets', ascending=False)
+df1 = df1[['screen names', 'names', 'user id', 'statuses count', 'friends count', 'followers count', 'number of tweets']]
+df1.to_csv('lyon_3_users.csv')
+number_users = len(df1.index)
+df1_mean = df1.mean(axis=0)
+df1_min = df1.min(axis=0)
+df1_max = df1.max(axis=0)
+df1_var = df1.var(axis=0)
+df1_std = df1.std(axis=0)
+df1_median = df1.median(axis=0)
+pc_number_users = int(number_users / 10)
+pc_number_users
+df2 = df1.iloc[0:pc_number_users]
+df2.to_csv('lyon_3_users_10pc.csv')
 
-# print(len(tweets_data))
+print(str(number_tweets) + ' tweets from ' + str(number_users) + ' users')
+print(df1_mean)
+print(df1_median)
+print(df1_var)
+print(df1_std)
+print(pc_number_users)
 
-# tweet = tweets_data[0]
-# print(tweet.keys())
-
-
-
-# ids = [tweet['id_str'] for tweet in tweets_data]
-# texts = [tweet['text'] for tweet in tweets_data]
-# times = [tweet['created_at'] for tweet in tweets_data]
-# screen_names = [tweet['user']['screen_name'] for tweet in tweets_data]
-# names = [tweet['user']['name'] for tweet in tweets_data]
-# hashtag1 = [(T['entities']['hashtags'][0]['text'] if len(T['entities']['hashtags']) >= 1 else None) for T in tweets_data]
-# url1 = [(T['entities']['urls'][0]['expanded_url'] if len(T['entities']['urls']) >= 1 else None) for T in tweets_data]
-# place_name = [(T['place']['full_name'] if T['place'] else None) for T in tweets_data]
-# place_type = [(T['place']['place_type'] if T['place'] else None) for T in tweets_data]
-
-# print(ids)
-# print(texts)
-# print(times)
-# print(screen_names)
-# print(names)
-# print(hashtags)
-# print(urls)
-# print(place_name)
-
-
-tweets = pandas.DataFrame()
-tweets['ids'] = [tweet['id_str'] for tweet in tweets_data]
-tweets['text'] = [tweet['text'] for tweet in tweets_data]
-tweets['times'] = [tweet['created_at'] for tweet in tweets_data]
-tweets['screen_names'] = [tweet['user']['screen_name'] for tweet in tweets_data]
-tweets['names'] = [tweet['user']['name'] for tweet in tweets_data]
-tweets['hashtag1'] = [(T['entities']['hashtags'][0]['text'] if len(T['entities']['hashtags']) >= 1 else None) for T in tweets_data]
-tweets['hashtag2'] = [(T['entities']['hashtags'][1]['text'] if len(T['entities']['hashtags']) >= 2 else None) for T in tweets_data]
-tweets['hashtag3'] = [(T['entities']['hashtags'][2]['text'] if len(T['entities']['hashtags']) >= 3 else None) for T in tweets_data]
-tweets['url1'] = [(T['entities']['urls'][0]['expanded_url'] if len(T['entities']['urls']) >= 1 else None) for T in tweets_data]
-tweets['url2'] = [(T['entities']['urls'][1]['expanded_url'] if len(T['entities']['urls']) >= 2 else None) for T in tweets_data]
-tweets['url3'] = [(T['entities']['urls'][2]['expanded_url'] if len(T['entities']['urls']) >= 3 else None) for T in tweets_data]
-
-tweets.to_csv('prova.csv')
+df1
+df2
