@@ -4,7 +4,6 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 from time import gmtime, strftime
 import codecs
-import sys
 
 
 # Access and authorize our Twitter credentials from credentials.py
@@ -22,7 +21,6 @@ day = strftime("%Y-%m-%d", gmtime())
 file_name = day + '_' + str(keywords[0])
 
 # This is a basic listener that just prints received tweets to stdout.
-n = 0
 
 
 class StdOutListener(StreamListener):
@@ -31,39 +29,16 @@ class StdOutListener(StreamListener):
         pass
 
     def on_data(self, data):
-        print(n + 1)
         with codecs.open(file_name + '.json', 'a', 'utf-8') as tf:
             tf.write(data)
             tf.write('\n')  # Add one line per tweet to the .json file
+
+
         return True
 
-        # Tweepy variables to deal with errors
-    def keep_alive(self):
-        return True
+    def on_error(self, status):
+        print(status)
 
-    def on_exception(self, exception):
-        print(exception)
-        return True
-
-    def on_limit(self, track):
-        print(track)
-        return True
-
-    def on_error(self, status_code):
-        print(sys.stderr, 'Encountered error with status code:', status_code)
-        return True  # Don't kill the stream
-
-    def on_timeout(self):
-        print(sys.stderr, 'Timeout...')
-        return True  # Don't kill the stream
-
-    def on_disconnect(self, notice):
-        print(notice)
-        return True
-
-    def on_warning(self, notice):
-        print(notice)
-        return True
 
 if __name__ == '__main__':
 
