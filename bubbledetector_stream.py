@@ -15,14 +15,14 @@ consumer_secret = "1lXmZP4gsnBri0IIWE0RM3PH9tmKofb4Un9VYIDAw2lNK10Inn"
 
 
 # Filters
-keywords = ['HarryPotter20']
+keywords = ['Academy']
 
 # Name of files
 day = strftime("%Y-%m-%d", gmtime())
 file_name = day + '_' + str(keywords[0])
 
 # This is a basic listener that just prints received tweets to stdout.
-n = 0
+n = 1
 
 
 class StdOutListener(StreamListener):
@@ -31,7 +31,9 @@ class StdOutListener(StreamListener):
         pass
 
     def on_data(self, data):
-        print(n + 1)
+        global n
+        print(n)
+        n = n + 1
         with codecs.open(file_name + '.json', 'a', 'utf-8') as tf:
             tf.write(data)
             tf.write('\n')  # Add one line per tweet to the .json file
