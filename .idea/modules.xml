@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/BubbleDetector.iml" filepath="$PROJECT_DIR$/.idea/BubbleDetector.iml" />
       <module fileurl="file://$PROJECT_DIR$/../BubbleDetector_test/.idea/BubbleDetector_test.iml" filepath="$PROJECT_DIR$/../BubbleDetector_test/.idea/BubbleDetector_test.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/d3/.idea/d3.iml" filepath="$USER_HOME$/PycharmProjects/d3/.idea/d3.iml" />
     </modules>
   </component>
 </project>

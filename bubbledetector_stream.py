@@ -15,11 +15,12 @@ consumer_secret = "1lXmZP4gsnBri0IIWE0RM3PH9tmKofb4Un9VYIDAw2lNK10Inn"
 
 
 # Filters
-keywords = ['Academy']
+keywords = input ("Which keyword?: ")
+keywords = [keywords]
 
 # Name of files
 day = strftime("%Y-%m-%d", gmtime())
-file_name = day + '_' + str(keywords[0])
+file_name = str(keywords[0]) + '_' + day
 
 # This is a basic listener that just prints received tweets to stdout.
 n = 1
@@ -34,10 +35,10 @@ class StdOutListener(StreamListener):
         global n
         print(n)
         n = n + 1
-        with codecs.open(file_name + '.json', 'a', 'utf-8') as tf:
+        with codecs.open("/home/data/poiroux/" + file_name + '.json', 'a', 'utf-8') as tf:
             tf.write(data)
             tf.write('\n')  # Add one line per tweet to the .json file
-        return True
+        pass
 
         # Tweepy variables to deal with errors
     def keep_alive(self):
@@ -45,27 +46,31 @@ class StdOutListener(StreamListener):
 
     def on_exception(self, exception):
         print(exception)
-        return True
+        pass
 
     def on_limit(self, track):
         print(track)
-        return True
+        pass
 
     def on_error(self, status_code):
         print(sys.stderr, 'Encountered error with status code:', status_code)
-        return True  # Don't kill the stream
+        pass # Don't kill the stream
+
+    def on_AttributeError(self, status_code):
+        print(sys.stderr, 'Encountered error with status code:', status_code)
+        pass # Don't kill the stream
 
     def on_timeout(self):
         print(sys.stderr, 'Timeout...')
-        return True  # Don't kill the stream
+        pass # Don't kill the stream
 
     def on_disconnect(self, notice):
         print(notice)
-        return True
+        pass
 
     def on_warning(self, notice):
         print(notice)
-        return True
+        pass
 
 if __name__ == '__main__':
 
@@ -76,4 +81,4 @@ if __name__ == '__main__':
     stream = Stream(auth, l)
 
     # This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
-    stream.filter(track=keywords, async=True, stall_warnings=True)
+    stream.filter(track=keywords, languages=["de"], async=True, stall_warnings=True)
