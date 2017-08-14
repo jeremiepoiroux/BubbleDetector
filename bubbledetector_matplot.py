@@ -19,6 +19,7 @@ from astropy.convolution.kernels import Gaussian2DKernel
 import scipy.ndimage as sp
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from math import pi
 # import sphviewer as sph
 
 # open json file
@@ -475,4 +476,159 @@ heatmap(xs_2, ys_2, bubbliness_2, "bubbliness community2")
 heatmap(xs_3, ys_3, bubbliness_3, "bubbliness community3")
 heatmap(xs_4, ys_4, bubbliness_4, "bubbliness community4")
 
-###
+# Histograms per node
+
+nodes_stats = []
+for i in range(len(s["nodes"])):
+    nodes_stats.append((s["nodes"][i]["id"],s["nodes"][i]["outdegree"],s["nodes"][i]["links_inside_community_at_distance_2"] + s["nodes"][i]["links_outside_community_at_distance_2"],s["nodes"][i]["b1"],s["nodes"][i]["b2"],s["nodes"][i]["bubbliness"]))
+
+# list_1 = [1]
+
+z = 0
+for i in range(len(nodes_stats)):
+    t = (nodes_stats[i][1], nodes_stats[i][2])
+    u = (nodes_stats[i][3], nodes_stats[i][4], nodes_stats[i][5])
+
+    # print(t)
+
+    def plot_hist_node(t, u, colors, title):
+        fig, (ax1, ax2) = plt.subplots(figsize=(6, 2), ncols=2)
+        # plt.figure(figsize=(500/96, 500/96), dpi=96)
+        x = np.arange(2)
+        y = np.arange(3)
+        ax1.bar(x, t)
+        ax2.bar(y, u)
+        # ax1.xaxis.set_ticks(x, ('at distance 1', 'at distance 2'))
+        # ax1.xticks(x, ('at distance 1', 'at distance 2'))
+        ax1.set_xticklabels(["","at d1", "", "at d2"])
+        ax2.set_xticklabels(["","b1", "b2", "bb"])
+        ax1.set_title('Outdegree')
+        ax2.set_title('Bubbliness')
+
+        fig.suptitle('#BTW17 - Statistics - ' + title + str(z) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
+        # plt.xlabel('Value of indegree')
+        # plt.ylabel('Number of nodes')
+        # plt.xlim(0, 897)
+        # plt.ylim(0, 721)
+        # plt.autoscale(False)
+        # plt.savefig("BTW17_" + title + '_histogram.png', dpi=96)
+        plt.show()
+        plt.close()
+
+    plot_hist_node(t, u, "#3F007D", "Nodes ")
+    z = z + 1
+
+# for each node, find community for all nodes at distance 1
+
+list_friends_d1_new = []
+for i in range(len(s["nodes"])):
+    list_friends_d1_in = (s["nodes"][i]["id"], json.loads(s["nodes"][i]["list_of_friends_inside_community_at_distance_1"]))
+    list_friends_d1_out = (s["nodes"][i]["id"], json.loads(s["nodes"][i]["list_of_friends_outside_community_at_distance_1"]))
+    # print(list_friends_d1[1][0])
+    # print(list_friends_d1_out)
+    for j in list_friends_d1_in[1]:
+        # print((i, j, s["nodes"][j]["community"]))
+        list_friends_d1_new.append((i, j, s["nodes"][j]["community"]))
+
+    for j in list_friends_d1_out[1]:
+        # print((i, j, s["nodes"][j]["community"]))
+        list_friends_d1_new.append((i, j, s["nodes"][j]["community"]))
+
+list_friends_radar = []
+for i in range(len(s["nodes"])):
+    def radar_node(k):
+        l = []
+        m = []
+        for n in list_friends_d1_new:
+            if n[0] == k:
+                # print(i)
+                l.append(n[2])
+                c = Counter(l)
+                m = (k, s["nodes"][k]["community"], c)
+        list_friends_radar.append(m)
+
+    radar_node(i)
+
+list_friends_radar
+
+# radar for each node
+
+zz = 0
+for i in list_friends_radar:
+    try:
+        c0 = (i[0], i[1], i[2][0])
+        c1 = (i[0], i[1], i[2][1])
+        c2 = (i[0], i[1], i[2][2])
+        c3 = (i[0], i[1], i[2][3])
+        c4 = (i[0], i[1], i[2][4])
+
+        # print(c0)
+    except:
+        TypeError
+
+    def plot_radar_node(a,b,c,d,e):
+
+        # Set data
+        cat = ['0', '1', '2', '3', '4']
+        values = [a,b,c,d,e]
+        N = len(cat)
+        x_as = [n / float(N) * 2 * pi for n in range(N)]
+
+        # Because our chart will be circular we need to append a copy of the first
+        # value of each list at the end of each list with data
+        values += values[:1]
+        x_as += x_as[:1]
+
+        # Set color of axes
+        plt.rc('axes', linewidth=0.5, edgecolor="#888888")
+
+        # Create polar plot
+        ax = plt.subplot(111, polar=True)
+
+        # Set clockwise rotation. That is:
+        ax.set_theta_offset(pi / 2)
+        ax.set_theta_direction(-1)
+
+        # Set position of y-labels
+        ax.set_rlabel_position(0)
+
+        # Set color and linestyle of grid
+        ax.xaxis.grid(True, color="#888888", linestyle='solid', linewidth=0.5)
+        ax.yaxis.grid(True, color="#888888", linestyle='solid', linewidth=0.5)
+
+        # Set number of radial axes and remove labels
+        plt.xticks(x_as[:-1], [])
+
+        # Set yticks
+        plt.yticks([20, 40, 60, 80, 100], ["20", "40", "60", "80", "100"])
+
+        # Plot data
+        ax.plot(x_as, values, linewidth=0, linestyle='solid', zorder=3)
+
+        # Fill area
+        ax.fill(x_as, values, 'b', alpha=0.3)
+
+        # Set axes limits
+        plt.ylim(0, max(a,b,c,d,e))
+
+        # Draw ytick labels to make sure they fit properly
+        for i in range(N):
+            angle_rad = i / float(N) * 2 * pi
+
+            if angle_rad == 0:
+                ha, distance_ax = "center", 10
+            elif 0 < angle_rad < pi:
+                ha, distance_ax = "left", 1
+            elif angle_rad == pi:
+                ha, distance_ax = "center", 1
+            else:
+                ha, distance_ax = "right", 1
+
+        ax.text(angle_rad, max(a,b,c,d,e) + distance_ax, cat[i], size=10, horizontalalignment=ha, verticalalignment="center")
+        plt.title('#BTW17 - Community Radar Node ' + str(zz) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
+        # Show polar plot
+        plt.show()
+        plt.close()
+
+    plot_radar_node(c0[2], c1[2], c2[2], c3[2], c4[2])
+    zz = zz + 1
