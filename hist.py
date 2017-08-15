@@ -80,7 +80,7 @@ for i in df.index:
 
 community_count = []
 for i in community:
-    if i[0] == 4:
+    if i[0] == 1:
         # print(i[1])
         community_count.append(i[1])
 

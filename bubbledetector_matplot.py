@@ -99,6 +99,8 @@ community = []
 for i in range(len(s["nodes"])):
     community.append(s["nodes"][i]["community"])
 
+Counter(community)
+
 # degree total and by community
 
 degree = []
@@ -368,7 +370,7 @@ def plot_scatter(col, scale, title, t):
     plt.axis('off')
     if t != []:
         cbar = plt.colorbar(ticks=t)
-    # plt.savefig("BTW17_" + title + '_scatter.png', dpi=200)
+    # plt.savefig("BTW17_" + title + '_scatter.png', dpi=200, transparent=True)
     # plt.show()
     # plt.draw()
     plt.close()
@@ -392,7 +394,7 @@ def plot_hist(data, colors, title, length):
     # plt.xlim(0, 897)
     # plt.ylim(0, 721)
     plt.autoscale(False)
-    # plt.savefig("BTW17_" + title + '_histogram.png', dpi=96)
+    # plt.savefig("BTW17_" + title + '_histogram.png', dpi=96, transparent=True)
     # plt.show()
     plt.close()
 
@@ -452,7 +454,7 @@ def heatmap(xx, yy, ww, title):
     plt.axis('off')
     plt.autoscale(False)
     # plt.colorbar()
-    # plt.savefig("BTW17_" + title + '_heatmap.png', dpi=200)
+    # plt.savefig("BTW17_" + title + '_heatmap.png', dpi=200, transparent=True)
     #
     # plt.show()
 
@@ -481,19 +483,22 @@ heatmap(xs_4, ys_4, bubbliness_4, "bubbliness community4")
 
 nodes_stats = []
 for i in range(len(s["nodes"])):
-    nodes_stats.append((s["nodes"][i]["id"],s["nodes"][i]["outdegree"],s["nodes"][i]["links_inside_community_at_distance_2"] + s["nodes"][i]["links_outside_community_at_distance_2"],s["nodes"][i]["b1"],s["nodes"][i]["b2"],s["nodes"][i]["bubbliness"]))
+    nodes_stats.append((s["nodes"][i]["id"],s["nodes"][i]["outdegree"],s["nodes"][i]["links_inside_community_at_distance_2"] + s["nodes"][i]["links_outside_community_at_distance_2"],s["nodes"][i]["b1"],s["nodes"][i]["b2"],s["nodes"][i]["bubbliness"],s["nodes"][i]["community"]))
 
+
+nodes_stats
 # list_1 = [1]
 
 z = 0
 for i in range(len(nodes_stats)):
     t = (nodes_stats[i][1], nodes_stats[i][2])
     u = (nodes_stats[i][3], nodes_stats[i][4], nodes_stats[i][5])
+    c = (nodes_stats[i][6])
 
     # print(t)
 
-    def plot_hist_node(t, u, colors, title):
-        fig, (ax1, ax2) = plt.subplots(figsize=(6, 2), ncols=2)
+    def plot_hist_node(t, u, colors, title, com):
+        fig, (ax1, ax2) = plt.subplots(figsize=(7, 4), ncols=2)
         # plt.figure(figsize=(500/96, 500/96), dpi=96)
         x = np.arange(2)
         y = np.arange(3)
@@ -506,17 +511,17 @@ for i in range(len(nodes_stats)):
         ax1.set_title('Outdegree')
         ax2.set_title('Bubbliness')
 
-        fig.suptitle('#BTW17 - Statistics - ' + title + str(z) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
+        fig.suptitle('#BTW17 - Statistics - ' + title + str(z) + ' - community ' + str(com))
         # plt.xlabel('Value of indegree')
         # plt.ylabel('Number of nodes')
         # plt.xlim(0, 897)
         # plt.ylim(0, 721)
         # plt.autoscale(False)
-        # plt.savefig("BTW17_" + title + str(z) + '_histogram.png', dpi=96)
+        plt.savefig("BTW17_Community_" + str(com) + "_" + title + str(z) + '_histogram.png', dpi=96, transparent=True)
         # plt.show()
         plt.close()
 
-    plot_hist_node(t, u, "#3F007D", "Nodes ")
+    plot_hist_node(t, u, "#3F007D", "Node", c)
     z = z + 1
 
 # for each node, find community for all nodes at distance 1
@@ -548,6 +553,9 @@ for i in range(len(s["nodes"])):
 
 list_friends_radar_d1 = []
 list_friends_radar_d2 = []
+list_friends_radar_d1_t = []
+list_friends_radar_d2_t = []
+
 for i in range(len(s["nodes"])):
     def radar_node(k):
         l = []
@@ -558,7 +566,9 @@ for i in range(len(s["nodes"])):
                 l.append(n[2])
                 c = Counter(l)
                 m = (k, s["nodes"][k]["community"], c)
-        list_friends_radar_d1.append(m)
+        list_friends_radar_d1_t.append(m)
+        if m != []:
+            list_friends_radar_d1.append(m)
 
     radar_node(i)
 
@@ -572,38 +582,41 @@ for r in range(len(s["nodes"])):
                 l.append(n[2])
                 c = Counter(l)
                 m = (k, s["nodes"][k]["community"], c)
-        list_friends_radar_d2.append(m)
+        list_friends_radar_d2_t.append(m)
+        if m != []:
+            list_friends_radar_d2.append(m)
 
     radar_node(r)
 
 list_friends_radar_d1d2 = []
-for i in list_friends_radar_d1:
+for i in list_friends_radar_d1_t:
     try:
-        j = i[0], i[1], i[2], list_friends_radar_d2[i[0]][2]
+        j = i[0], i[1], i[2], list_friends_radar_d2_t[i[0]][2]
         list_friends_radar_d1d2.append(j)
     except:
         TypeError
 
-list_friends_radar_d1
-list_friends_radar_d2
-list_friends_radar_d1d2
+len(list_friends_radar_d1)
+len(list_friends_radar_d2)
+len(list_friends_radar_d1d2)
+
+len(list_friends_radar_d1_t)
+len(list_friends_radar_d2_t)
 
 # Donut distance 1
 
-zz = 0
-for i in list_friends_radar_d1:
+ for i in list_friends_radar_d1:
     try:
         c0_1 = (i[0], i[1], i[2][0])
         c1_1 = (i[0], i[1], i[2][1])
         c2_1 = (i[0], i[1], i[2][2])
         c3_1 = (i[0], i[1], i[2][3])
         c4_1 = (i[0], i[1], i[2][4])
-
         # print(c0)
     except:
         TypeError
 
-    def plot_radar_node_d1(a,b,c,d,e,com):
+    def plot_radar_node_d1(a,b,c,d,e,com,l):
 
         # The slices will be ordered and plotted counter-clockwise.
         labels = '0', '  1', '    2', '      3', '        4'
@@ -620,18 +633,16 @@ for i in list_friends_radar_d1:
 
         # Set aspect ratio to be equal so that pie is drawn as a circle.
         plt.axis('equal')
-        plt.title('#BTW17 - Community Donut at d1 - Node ' + str(zz) + ' - Community ' + str(com) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
-        plt.savefig("BTW17_Node" + str(zz) + '_donut_distance1.png', dpi=96)
+        plt.title('#BTW17 - Community Donut at d1 - Node ' + str(l) + ' - Community ' + str(com))
+        # plt.savefig("BTW17_Community_" + str(com) + "_Node" + str(l) + '_donut_distance1.png', dpi=96, transparent=True)
         # Show polar plot
         plt.show()
         plt.close()
 
-    plot_radar_node_d1(c0_1[2], c1_1[2], c2_1[2], c3_1[2], c4_1[2], c0_1[1])
-    zz = zz + 1
+    plot_radar_node_d1(c0_1[2], c1_1[2], c2_1[2], c3_1[2], c4_1[2], c0_1[1], c0_1[0])
 
 # Donut distance 2
 
-zz = 0
 for i in list_friends_radar_d2:
     try:
         c0_1 = (i[0], i[1], i[2][0])
@@ -644,7 +655,7 @@ for i in list_friends_radar_d2:
     except:
         TypeError
 
-    def plot_radar_node_d2(a,b,c,d,e,com):
+    def plot_radar_node_d2(a,b,c,d,e,com,l):
 
         # The slices will be ordered and plotted counter-clockwise.
         labels = '0', '  1', '    2', '      3', '        4'
@@ -661,14 +672,13 @@ for i in list_friends_radar_d2:
 
         # Set aspect ratio to be equal so that pie is drawn as a circle.
         plt.axis('equal')
-        plt.title('#BTW17 - Community Donut at d1 - Node ' + str(zz) + ' - Community ' + str(com) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
+        plt.title('#BTW17 - Community Donut at d2 - Node ' + str(l) + ' - Community ' + str(com))
         # Show polar plot
-        # plt.savefig("BTW17_Node" + str(zz) + '_donut_distance2.png', dpi=96)
-        # plt.show()
+        plt.savefig("BTW17_Community_" + str(com) + "_Node" + str(l) + '_donut_distance2.png', dpi=96, transparent=True)
+        plt.show()
         plt.close()
 
-    plot_radar_node_d2(c0_1[2], c1_1[2], c2_1[2], c3_1[2], c4_1[2], c0_1[1])
-    zz = zz + 1
+    plot_radar_node_d2(c0_1[2], c1_1[2], c2_1[2], c3_1[2], c4_1[2], c0_1[1], c0_1[0])
 
 # donuts d1 and d2
 
@@ -704,61 +714,20 @@ for i in list_friends_radar_d1d2:
             # labels = map("".join, zip(list("aabbcc"),map(str, [1,2]*3)))
             pie2, _ = ax.pie([f,g,h,i,j], radius=1-width/2, colors=[com0, com1, com2, com3, com4])
             plt.setp( pie2, width=width, edgecolor='white')
-            plt.title('#BTW17 - Community Donut at d1 and d2 - Node ' + str(l) + ' - Community ' + str(k) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
-            plt.savefig("BTW17_Node" + str(l) + '_donut_distance1and2.png', dpi=96)
-            plt.show()
+            plt.title('#BTW17 - Community Donut at d1 and d2 - Node ' + str(l) + ' - Community ' + str(k))
+            plt.savefig("BTW17_Community_" + str(k) + "_Node" + str(l) + '_donut_distance_1and2.png', dpi=96, transparent=True)
+            # plt.show()
             plt.close()
 
     pie(c0_2[3],c1_2[3],c2_2[3],c3_2[3],c4_2[3], c0_2[2],c1_2[2],c2_2[2],c3_2[2],c4_2[2], c0_2[1], i[0])
 
 # Communities heatmaps
 
-# b1 total and by community
-
-b1_0
-b1_1
-b1_2
-b1_3
-b1_4
-
-# b2 total and by community
-
-b2_0
-b2_1
-b2_2
-b2_3
-b2_4
-
-N = len(b1_0)
-x = b1_0
-y = b2_0
-colors = np.random.rand(N)
-# area = np.pi * (15 * np.random.rand(N))**2  # 0 to 15 point radii
-
-plt.scatter(x, y, s=10, c=colors, alpha=1)
-plt.show()
-
-
-N = len(bubbliness_0)
-xx = b1_0
-yy = b2_0
-# Create heatmap
-heatmap, xedges, yedges = np.histogram2d(xx, yy, bins=(64,64))
-extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-
-# Plot heatmap
-plt.clf()
-plt.title('Pythonspot.com heatmap example')
-plt.ylabel('y')
-plt.xlabel('x')
-plt.imshow(heatmap, extent=extent)
-plt.show()
-
-
 def heatmap_xy(xx, yy, ww, title):
     x = xx
     y = yy
     my_dpi = 96
+    plt.subplot(5,1,2)
     plt.figure(figsize=(500/my_dpi, 500/my_dpi), dpi=my_dpi)
     heatmap, xedges, yedges = np.histogram2d(x, y, bins=100, weights=ww)
     plt.xlim(-1, 1)
@@ -777,9 +746,9 @@ def heatmap_xy(xx, yy, ww, title):
     plt.ylabel('bubbliness at distance 2')
     plt.plot((-1, 100, 100), (-1,100,100), "r--")
     # plt.colorbar()
-    plt.savefig("BTW17_" + title + '_heatmap_bubb.png', dpi=200)
+    # plt.savefig("BTW17_" + title + '_heatmap_bubb.png', dpi=200, transparent=True)
     #
-    plt.show()
+    # plt.show()
 
 heatmap_xy(b1_0, b2_0, bubbliness_0, "bubb b2b1 community 0")
 heatmap_xy(b1_1, b2_1, bubbliness_1, "bubb b2b1 community 1")
