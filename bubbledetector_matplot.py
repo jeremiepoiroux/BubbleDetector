@@ -623,7 +623,7 @@ for i in list_friends_radar_d1:
         plt.title('#BTW17 - Community Donut at d1 - Node ' + str(zz) + ' - Community ' + str(com) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
         plt.savefig("BTW17_Node" + str(zz) + '_donut_distance1.png', dpi=96)
         # Show polar plot
-        # plt.show()
+        plt.show()
         plt.close()
 
     plot_radar_node_d1(c0_1[2], c1_1[2], c2_1[2], c3_1[2], c4_1[2], c0_1[1])
@@ -705,8 +705,90 @@ for i in list_friends_radar_d1d2:
             pie2, _ = ax.pie([f,g,h,i,j], radius=1-width/2, colors=[com0, com1, com2, com3, com4])
             plt.setp( pie2, width=width, edgecolor='white')
             plt.title('#BTW17 - Community Donut at d1 and d2 - Node ' + str(l) + ' - Community ' + str(k) + ' - \n ' + str(time.asctime()), x=0.5, y=1.2)
-            # plt.savefig("BTW17_Node" + str(l) + '_donut_distance1and2.png', dpi=96)
-            # plt.show()
+            plt.savefig("BTW17_Node" + str(l) + '_donut_distance1and2.png', dpi=96)
+            plt.show()
             plt.close()
 
     pie(c0_2[3],c1_2[3],c2_2[3],c3_2[3],c4_2[3], c0_2[2],c1_2[2],c2_2[2],c3_2[2],c4_2[2], c0_2[1], i[0])
+
+# Communities heatmaps
+
+# b1 total and by community
+
+b1_0
+b1_1
+b1_2
+b1_3
+b1_4
+
+# b2 total and by community
+
+b2_0
+b2_1
+b2_2
+b2_3
+b2_4
+
+N = len(b1_0)
+x = b1_0
+y = b2_0
+colors = np.random.rand(N)
+# area = np.pi * (15 * np.random.rand(N))**2  # 0 to 15 point radii
+
+plt.scatter(x, y, s=10, c=colors, alpha=1)
+plt.show()
+
+
+N = len(bubbliness_0)
+xx = b1_0
+yy = b2_0
+# Create heatmap
+heatmap, xedges, yedges = np.histogram2d(xx, yy, bins=(64,64))
+extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+
+# Plot heatmap
+plt.clf()
+plt.title('Pythonspot.com heatmap example')
+plt.ylabel('y')
+plt.xlabel('x')
+plt.imshow(heatmap, extent=extent)
+plt.show()
+
+
+def heatmap_xy(xx, yy, ww, title):
+    x = xx
+    y = yy
+    my_dpi = 96
+    plt.figure(figsize=(500/my_dpi, 500/my_dpi), dpi=my_dpi)
+    heatmap, xedges, yedges = np.histogram2d(x, y, bins=100, weights=ww)
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    # plt.gca().invert_yaxis()
+    # fig, (ax1, ax2) = plt.subplots(1, 2)
+    # ax1.imshow(heatmap, interpolation='none')
+    # ax2.imshow(convolve(heatmap, Gaussian2DKernel(stddev=10)), interpolation='none')
+    plt.imshow(convolve(heatmap, Gaussian2DKernel(stddev=10)), interpolation='none')
+    plt.title('#BTW17 - ' + title + '  - Version du ' + str(time.asctime()))
+    # plt.axis('off')
+    plt.autoscale(True)
+    plt.xticks(np.arange(-1, max(x)*100+1, 10))
+    plt.yticks(np.arange(-1, max(x)*100+1, 10))
+    plt.xlabel('bubbliness at distance 1')
+    plt.ylabel('bubbliness at distance 2')
+    plt.plot((-1, 100, 100), (-1,100,100), "r--")
+    # plt.colorbar()
+    plt.savefig("BTW17_" + title + '_heatmap_bubb.png', dpi=200)
+    #
+    plt.show()
+
+heatmap_xy(b1_0, b2_0, bubbliness_0, "bubb b2b1 community 0")
+heatmap_xy(b1_1, b2_1, bubbliness_1, "bubb b2b1 community 1")
+heatmap_xy(b1_2, b2_2, bubbliness_2, "bubb b2b1 community 2")
+heatmap_xy(b1_3, b2_3, bubbliness_3, "bubb b2b1 community 3")
+heatmap_xy(b1_4, b2_4, bubbliness_4, "bubb b2b1 community 4")
+
+heatmap_xy(bubbliness_0, bubbliness_0, bubbliness_0, "bubbliness community 0")
+heatmap_xy(bubbliness_1, bubbliness_1, bubbliness_1, "bubbliness community 1")
+heatmap_xy(bubbliness_2, bubbliness_2, bubbliness_2, "bubbliness community 2")
+heatmap_xy(bubbliness_3, bubbliness_3, bubbliness_3, "bubbliness community 3")
+heatmap_xy(bubbliness_4, bubbliness_4, bubbliness_4, "bubbliness community 4")

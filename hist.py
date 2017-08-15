@@ -69,22 +69,20 @@ stats(2)
 stats(3)
 stats(4)
 
+# count edges from and to communities
 
-# TO DO AGAIN
-def links_to_communities(c):
-    links_from_community = []
-    for i in range(len(s["nodes"])):
-        if s["nodes"][i]["community"] == c:
-            j = s["nodes"][i]["list_of_friends_outside_community_at_distance_1"]
-            k = s["nodes"][i]["list_of_friends_inside_community_at_distance_1"]
-            l = json.loads(j)
-            m = json.loads(m)
-            for ll in l:
-                links_from_community.append(s["nodes"][ll]["community"])
-    print(Counter(links_from_community))
+df = pd.read_csv("BTW17_2_2017-07-20_users.gml_limited.gml_def.gml_edges.csv", error_bad_lines=False)
 
-links_to_communities(0)
-links_to_communities(1)
-links_to_communities(2)
-links_to_communities(3)
-links_to_communities(4)
+community = []
+for i in df.index:
+    # print(i)
+    community.append((df.in_community[i], df.out_community[i]))
+
+community_count = []
+for i in community:
+    if i[0] == 4:
+        # print(i[1])
+        community_count.append(i[1])
+
+Counter(community_count)
+len(community_count)
