@@ -13,7 +13,7 @@ g = ig.Graph.Read_GML(gml_file)
 # read csv
 df = pd.read_csv(csv_file, error_bad_lines=False)
 len(df)
-# grab the 125th line and the number of tweets of this user
+# grab the 300th line and the number of tweets of this user
 df_loc = df.loc[300]
 nb_tweets = df_loc["number_of_tweets"]
 print(nb_tweets)

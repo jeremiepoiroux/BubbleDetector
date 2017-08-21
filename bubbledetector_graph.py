@@ -244,6 +244,8 @@ for i in range(len(g.vs)):
     # spd_str = json.dumps(spd, separators=(',',':'))
     # g.vs[i]["dijkstra"] = spd_str
 
+
+
 # export new gml
 g.save(gml_file + "_def.gml", format="gml")
 

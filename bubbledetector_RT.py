@@ -88,7 +88,7 @@ for i in list_of_people_retweeted_inside_set:
 
 len(final_list)
 len(set(final_list))
-# final_list
+final_list
 
 final_list_retweeters = []
 for f in final_list:
@@ -97,3 +97,7 @@ for f in final_list:
 len(set(final_list_retweeters))
 
 print('stats \n' + str(len(set(final_list_retweeters))) + ' retweeters \n' + str(len(set(final_list))) + ' retweets \n' + str(len(set(list_of_people_retweeted_inside))) + ' retweeted people')
+
+
+Counter(list_of_people_retweeted_inside)
+Counter(final_list_retweeters)
