@@ -16,6 +16,8 @@ import pandas as pd
 gml_file = input ("Which GML file (with .gml)?: ")
 g = ig.Graph.Read_GML(gml_file)
 
+len(g.vs)
+
 # clean nodes in gml file
 try:
     del g.vs["image"]
@@ -91,12 +93,12 @@ for v in g.vs:
 print(part)
 part_delete = input ("How many nodes min in communities to keep?: ")
 
-# to_delete_com = []
-# for p in part:
-    # if len(p) < int(part_delete):
-        # for v in p:
-            # to_delete_com.append(v)
-# g.delete_vertices(to_delete_com)
+to_delete_com = []
+for p in part:
+    if len(p) < int(part_delete):
+        for v in p:
+            to_delete_com.append(v)
+g.delete_vertices(to_delete_com)
 
 # bubbliness
 # out links inside community 1st circle
