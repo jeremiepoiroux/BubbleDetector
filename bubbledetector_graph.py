@@ -56,6 +56,7 @@ node_in_degree = g.degree(mode=2)
 for i in range(len(g.vs)):
     g.vs[i]["in_degree"] = node_in_degree[i]
 
+
 # out degree
 node_out_degree = g.degree(mode=1)
 for i in range(len(g.vs)):
@@ -91,14 +92,14 @@ for v in g.vs:
     v["community"] = communities[v["id"]]
 
 print(part)
-part_delete = input ("How many nodes min in communities to keep?: ")
+# part_delete = input ("How many nodes min in communities to keep?: ")
 
-to_delete_com = []
-for p in part:
-    if len(p) < int(part_delete):
-        for v in p:
-            to_delete_com.append(v)
-g.delete_vertices(to_delete_com)
+# to_delete_com = []
+# for p in part:
+    # if len(p) < int(part_delete):
+        # for v in p:
+            # to_delete_com.append(v)
+# g.delete_vertices(to_delete_com)
 
 # bubbliness
 # out links inside community 1st circle
@@ -177,9 +178,12 @@ for i in range(len(g.vs)):
     g.vs[i]["id"] = i
 
 # print(g.vs["id"])
+# for i in range(len(g.vs)):
+    # print(g.vs[i]["label"])
 
-for i in range(len(g.vs)):
-    this_node_follows = g.neighborhood(i, mode="out", order=1)
+
+# for i in range(len(g.vs)):
+    # this_node_follows = g.neighborhood(i, mode="out", order=1)
     # print(this_node_follows)
 
 def out_edges(order):
@@ -218,6 +222,10 @@ out_edges(1)
 out_edges(2)
 # out_edges(3)
 
+# for i in range(len(g.vs)):
+    # print(g.vs[i]["out_inside_1"])
+
+
 community = []
 for i in range(len(g.vs)):
     com = g.vs[i]["community"]
@@ -230,7 +238,7 @@ for i in range(len(g.vs)):
     elif g.vs[i]["outinside_2_DIVoutdegree_ratio"] == -1.0:
         g.vs[i]["bubbliness"] = -1.0
     else:
-        g.vs[i]["bubbliness"] = (g.vs[i]["outinside_1_DIVoutdegree_ratio"] - g.vs[i]["outinside_2_DIVoutdegree_ratio"])
+        g.vs[i]["bubbliness"] = (g.vs[i]["outinside_1_DIVoutdegree_ratio"] + g.vs[i]["outinside_2_DIVoutdegree_ratio"])
 
 # for i in range(len(g.vs)):
     # g.vs[i]["ratio_outgoing_links_inside_community_mean"] = (g.vs[i]["outinside_1_DIVoutdegree_ratio"] + g.vs[i]["outinside_2_DIVoutdegree_ratio"] + g.vs[i]["outinside_3_DIVoutdegree_ratio"]) / 3

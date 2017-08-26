@@ -29,11 +29,11 @@ list_of_tweets_retweeted = []
 
 # test if no nan
 # for d in df_list:
-    # print(d[4].lower())
+    # print(d[4])
 
 # delete nan
-# del df_list[6779]
-# df_list[6778]
+# del df_list[6583]
+
 
 for r in gml_screen_names:
     for d in df_list:

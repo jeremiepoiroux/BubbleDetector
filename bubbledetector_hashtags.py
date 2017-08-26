@@ -4,15 +4,15 @@ import numpy as np
 import math
 import community
 import codecs
-import collections
+from collections import Counter
 import json
 import csv
 import pandas as pd
 from operator import is_not
 from functools import partial
 
-g = ig.Graph.Read_GML("BTW17_2_2017-07-20_users.gml_limited.gml_def.gml")
-t = pd.read_csv("BTW17_2_2017-07-20.csv", error_bad_lines=False)
+g = ig.Graph.Read_GML("feminismus_2017-07-09_users.gml_limited.gml_def.gml")
+t = pd.read_csv("feminismus_2017-07-09.csv", error_bad_lines=False)
 
 gml = []
 for i in range(len(g.vs)):
@@ -21,15 +21,21 @@ for i in range(len(g.vs)):
 ####
 df_list = t.values.tolist()
 
+
+df_list
+for d in df_list:
+    print(d[4].lower())
+
 list_of_hashtags = []
 for r in gml:
-    if r[1] == 1:
+    if r[1] == 5:
         # print(r[0])
         for d in df_list:
             if r[0] in d[4].lower():
                 list_of_hashtags.append(d[8])
                 list_of_hashtags.append(d[9])
                 list_of_hashtags.append(d[10])
+                # print(r[0])
 
 len(list_of_hashtags)
 

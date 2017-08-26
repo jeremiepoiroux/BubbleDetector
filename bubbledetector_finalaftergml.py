@@ -114,7 +114,7 @@ print(nodes_json)
 print(",\"links\":")
 print(edges_json + "}")
 
-with codecs.open("feminismus.json", 'w', 'utf-8') as tf:
+with codecs.open("feminismus_new.json", 'w', 'utf-8') as tf:
     tf.write("{\"nodes\":")
     tf.write(nodes_json)
     tf.write(",\"links\":")
