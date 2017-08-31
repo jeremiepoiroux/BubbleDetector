@@ -28,10 +28,11 @@ list_of_retweeters = []
 list_of_tweets_retweeted = []
 
 # test if no nan
-# for d in df_list:
-    # print(d[4])
+for d in df_list:
+    print(d[4])
 
 # delete nan
+# del df_list[6781]
 # del df_list[6583]
 
 

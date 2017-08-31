@@ -27,7 +27,7 @@ from math import pi
 with open("BTW17.json") as json_file:
     s = json.load(json_file)
 
-s
+# s
 # coord datasets
 
 xs = []
@@ -289,7 +289,37 @@ for i in range(len(s["nodes"])):
     if s["nodes"][i]["community"] == 4:
         bubbliness_4.append(s["nodes"][i]["bubbliness"])
 
-bubbliness
+
+
+
+bubbliness_viz = []
+for i in range(len(s["nodes"])):
+    bubbliness_viz.append(s["nodes"][i]["bubbliness_viz"])
+
+bubbliness_0_viz = []
+for i in range(len(s["nodes"])):
+    if s["nodes"][i]["community"] == 0:
+        bubbliness_0_viz.append(s["nodes"][i]["bubbliness_viz"])
+
+bubbliness_1_viz = []
+for i in range(len(s["nodes"])):
+    if s["nodes"][i]["community"] == 1:
+        bubbliness_1_viz.append(s["nodes"][i]["bubbliness_viz"])
+
+bubbliness_2_viz = []
+for i in range(len(s["nodes"])):
+    if s["nodes"][i]["community"] == 2:
+        bubbliness_2_viz.append(s["nodes"][i]["bubbliness_viz"])
+
+bubbliness_3_viz = []
+for i in range(len(s["nodes"])):
+    if s["nodes"][i]["community"] == 3:
+        bubbliness_3_viz.append(s["nodes"][i]["bubbliness_viz"])
+
+bubbliness_4_viz = []
+for i in range(len(s["nodes"])):
+    if s["nodes"][i]["community"] == 4:
+        bubbliness_4_viz.append(s["nodes"][i]["bubbliness_viz"])
 
 # number of times people were retweeted
 
@@ -931,6 +961,9 @@ times_retweeted_log
 Counter(times_retweeted_2)
 
 
+bubbliness_viz
+
+
 def plot_scatter(col, title, t):
     x = xs
     y = ys
@@ -946,9 +979,9 @@ def plot_scatter(col, title, t):
     plt.autoscale(False)
     plt.gca().invert_yaxis()
     plt.axis('off')
-    # if t != []:
-        # bar = plt.colorbar(ticks=t)
-    plt.savefig("BTW17_" + title + '_scatter.png', dpi=96, transparent=True)
+    if t != []:
+        bar = plt.colorbar(ticks=t)
+    # plt.savefig("BTW17_" + title + '_scatter.png', dpi=96, transparent=True)
     plt.show()
     # plt.draw()
     plt.close()
@@ -958,7 +991,7 @@ def plot_scatter(col, title, t):
 # plot_scatter(outdegree, "Nodes colored by outdegree", [min(outdegree), int(median(outdegree)), max(outdegree)])
 # plot_scatter(b1_new, "Nodes colored by containment at distance 1", [min(b1), int(median(b1)), max(b1)])
 # plot_scatter(b2_new, "Nodes colored by containment at distance 2", [min(b2), int(median(b2)), max(b2)])
-plot_scatter(bubbliness_new, "Nodes colored by openness", [min(bubbliness_new), int(median(bubbliness_new)), max(bubbliness_new)])
+plot_scatter(bubbliness_viz, "Nodes colored by openness", [min(bubbliness), int(median(bubbliness)), max(bubbliness)])
 # plot_scatter(times_retweeted_log, "Nodes colored by number of times they were retweeted", [min(times_retweeted_log), int(median(times_retweeted_log)), max(times_retweeted_log)])
 # plot_scatter(times_retweet_log, "Nodes colored by number of times they retweeted", [min(times_retweet), int(median(times_retweet)), max(times_retweet)])
 
@@ -998,7 +1031,7 @@ def plot_hist(data, title, length, x, y):
     # plt.title('#BTW17 - Statistics - ' + title + '\n  - Version du ' + str(time.asctime()))
     # plt.xlabel('Value of indegree')
     # plt.ylabel('Number of nodes')
-    plt.xlim(0, x)
+    plt.xlim(-1, x)
     plt.ylim(0, y)
     plt.autoscale(False)
     plt.savefig("BTW17_" + title + '_histogram.png', dpi=96, transparent=True)
@@ -1009,7 +1042,7 @@ def plot_hist(data, title, length, x, y):
 # plot_hist(outdegree, "Outdegree whole network", len(outdegree),65,25)
 # plot_hist(b1, "b1 whole network", len(b1), 1, 60)
 # plot_hist(b2, "b2 whole network", len(b2), 1,30)
-plot_hist(bubbliness, "openness ratio whole network", len(bubbliness), 2, 20)
+plot_hist(bubbliness, "openness ratio whole network", len(bubbliness), 1, 25)
 # plot_hist(were_retweeted, "nodes were retweeted whole network", len(were_retweeted), 40, 2.1)
 # plot_hist(have_retweeted, "nodes have retweeted whole network", len(have_retweeted), 5.1, 40)
 
@@ -1017,7 +1050,7 @@ plot_hist(bubbliness, "openness ratio whole network", len(bubbliness), 2, 20)
 # plot_hist(outdegree_0, "Outdegree community 0", len(outdegree_0),65,25)
 # plot_hist(b1_0, "b1 community 0", len(b1_0), 1, 40)
 # plot_hist(b2_0, "b2 community 0", len(b2_0),1,30)
-plot_hist(bubbliness_0, "openness ratio community 0", len(bubbliness_0), 2, 20)
+plot_hist(bubbliness_0, "openness ratio community 0", len(bubbliness_0), 1, 25)
 # plot_hist(were_retweeted_0, "nodes were retweeted community 0", len(were_retweeted_0), 40, 40)
 # plot_hist(have_retweeted_0, "nodes have retweeted community 0", len(have_retweeted_0), 5.1, 40)
 
@@ -1025,7 +1058,7 @@ plot_hist(bubbliness_0, "openness ratio community 0", len(bubbliness_0), 2, 20)
 # plot_hist(outdegree_1, "Outdegree community 1", len(outdegree_1),65,25)
 # plot_hist(b1_1, "b1 community 1", len(b1_1), 1, 40)
 # plot_hist(b2_1, "b2 community 1", len(b2_1), 1,30)
-plot_hist(bubbliness_1, "openness ratio community 1", len(bubbliness_1), 2, 20)
+plot_hist(bubbliness_1, "openness ratio community 1", len(bubbliness_1), 1, 25)
 # plot_hist(were_retweeted_1, "nodes were retweeted community 1", len(were_retweeted_1), 40, 40)
 # plot_hist(have_retweeted_1, "nodes have retweeted community 1", len(have_retweeted_1), 5.1, 40)
 
@@ -1033,7 +1066,7 @@ plot_hist(bubbliness_1, "openness ratio community 1", len(bubbliness_1), 2, 20)
 # plot_hist(outdegree_2, "Outdegree community 2", len(outdegree_2),65,25)
 # plot_hist(b1_2, "b1 community 2", len(b1_2), 1, 40)
 # plot_hist(b2_2, "b2 community 2", len(b2_2), 1,30)
-plot_hist(bubbliness_2, "openness ratio community 2", len(bubbliness_2), 2, 20)
+plot_hist(bubbliness_2, "openness ratio community 2", len(bubbliness_2), 1, 25)
 # plot_hist(were_retweeted_2, "nodes were retweeted community 2", len(were_retweeted_2), 40, 40)
 # plot_hist(have_retweeted_2, "nodes have retweeted community 2", len(have_retweeted_2), 5.1, 40)
 
@@ -1041,7 +1074,7 @@ plot_hist(bubbliness_2, "openness ratio community 2", len(bubbliness_2), 2, 20)
 # plot_hist(outdegree_3, "Outdegree community 3", len(outdegree_3),65,25)
 # plot_hist(b1_3, "b1 community 3", len(b1_3), 1, 40)
 # plot_hist(b2_3, "b2 community 3", len(b2_3), 1,30)
-plot_hist(bubbliness_3, "openness ratio community 3", len(bubbliness_3), 2, 20)
+plot_hist(bubbliness_3, "openness ratio community 3", len(bubbliness_3), 1, 25)
 # plot_hist(were_retweeted_3, "nodes were retweeted community 3", len(were_retweeted_3), 40, 40)
 # plot_hist(have_retweeted_3, "nodes have retweeted community 3", len(have_retweeted_3), 5.1, 40)
 
@@ -1049,7 +1082,7 @@ plot_hist(bubbliness_3, "openness ratio community 3", len(bubbliness_3), 2, 20)
 # plot_hist(outdegree_4, "Outdegree community 4", len(outdegree_4),65,25)
 # plot_hist(b1_4, "b1 community 4", len(b1_4), 1, 40)
 # plot_hist(b2_4, "b2 community 4", len(b2_4), 1,30)
-plot_hist(bubbliness_4, "openness ratio community 4", len(bubbliness_4), 2, 20)
+plot_hist(bubbliness_4, "openness ratio community 4", len(bubbliness_4), 1, 25)
 # plot_hist(were_retweeted_4, "nodes were retweeted community 4", len(were_retweeted_4), 40, 40)
 # plot_hist(have_retweeted_4, "nodes have retweeted community 4", len(have_retweeted_4), 5.1, 40)
 
@@ -1106,7 +1139,7 @@ heatmap(xs_3, ys_3, b2_3, "b2 community3")
 heatmap(xs_4, ys_4, b2_4, "b2 community4")
 
 # heatmap(xs, ys, bbb, "Openness ratio")
-heatmap(xs, ys, bubbliness, "Openness ratio")
+heatmap(xs, ys, bubbliness_viz, "Élargissement")
 heatmap(xs_0, ys_0, bubbliness_0, "bubbliness community0")
 heatmap(xs_1, ys_1, bubbliness_1, "bubbliness community1")
 heatmap(xs_2, ys_2, bubbliness_2, "bubbliness community2")
@@ -1405,7 +1438,7 @@ def heatmap_xy(xx, yy, ww, title):
     plt.show()
     plt.close
 
-heatmap_xy(b1_0, b2_0, b2_0, "Community 0 - Containement differences")
+heatmap_xy(0,0,0, "Community 0 - Containement differences")
 heatmap_xy(b1_1, b2_1, bubbliness_1, "Community 1 - Containement differences")
 heatmap_xy(b1_2, b2_2, bubbliness_2, "Community 2 - Containement differences")
 heatmap_xy(b1_3, b2_3, bubbliness_3, "Community 3 - Containement differences")

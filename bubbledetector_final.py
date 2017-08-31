@@ -48,6 +48,7 @@ nodes['links_outside_community_at_distance_2'] = [int(v['outgoinglinksoutsidecom
 nodes['b2'] = [v['outinside2DIVoutdegreeratio'] for v in g.vs]
 
 nodes['bubbliness'] = [v['bubbliness'] for v in g.vs]
+nodes['bubbliness_viz'] = [v['bubblinessviz'] for v in g.vs]
 # nodes['out_inside_2_DIV_outdegree_discount'] = [v['outinside2DIVoutdegreediscount'] for v in g.vs]
 
 # nodes['outgoing_links_inside_community_at_d3'] = [int(v['outgoinglinksinsidecommunityatd3']) for v in g.vs]

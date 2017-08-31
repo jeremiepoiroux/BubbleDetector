@@ -235,10 +235,13 @@ len_c = len(set(community))
 for i in range(len(g.vs)):
     if g.vs[i]["outinside_1_DIVoutdegree_ratio"] == -1.0:
         g.vs[i]["bubbliness"] = -1.0
+        g.vs[i]["bubbliness_viz"] = -1.0
     elif g.vs[i]["outinside_2_DIVoutdegree_ratio"] == -1.0:
         g.vs[i]["bubbliness"] = -1.0
+        g.vs[i]["bubbliness_viz"] = -1.0
     else:
-        g.vs[i]["bubbliness"] = (g.vs[i]["outinside_1_DIVoutdegree_ratio"] + g.vs[i]["outinside_2_DIVoutdegree_ratio"])
+        g.vs[i]["bubbliness_viz"] = ((g.vs[i]["outinside_2_DIVoutdegree_ratio"]) - (g.vs[i]["outinside_1_DIVoutdegree_ratio"]) + 1)/2
+        g.vs[i]["bubbliness"] = (g.vs[i]["outinside_2_DIVoutdegree_ratio"]) - (g.vs[i]["outinside_1_DIVoutdegree_ratio"])
 
 # for i in range(len(g.vs)):
     # g.vs[i]["ratio_outgoing_links_inside_community_mean"] = (g.vs[i]["outinside_1_DIVoutdegree_ratio"] + g.vs[i]["outinside_2_DIVoutdegree_ratio"] + g.vs[i]["outinside_3_DIVoutdegree_ratio"]) / 3
